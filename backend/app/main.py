@@ -14,6 +14,9 @@ from fastapi.responses import ORJSONResponse
 from loguru import logger
 
 from app.config import settings
+from app.api.health import router as health_router
+from app.api.threats import router as threats_router
+from app.database.db import init_database
 
 # =============================================================
 #  LOGGING SETUP
@@ -109,6 +112,7 @@ async def lifespan(app: FastAPI) -> AsyncGenerator[None, None]:  # noqa: ARG001
         app_name=settings.APP_NAME,
         elapsed=elapsed,
     )
+    await init_database(create_tables=True)
 
     yield  # ← application runs here
 
@@ -154,7 +158,9 @@ def create_application() -> FastAPI:
         allow_methods=["*"],
         allow_headers=["*"],
     )
-
+    # API Routers
+    application.include_router(health_router)
+    application.include_router(threats_router)
     return application
 
 
@@ -206,22 +212,6 @@ async def root() -> ORJSONResponse:
         }
     )
 
-
-@app.get(
-    "/health",
-    summary="Health Check",
-    tags=["System"],
-    status_code=status.HTTP_200_OK,
-)
-async def health() -> ORJSONResponse:
-    """
-    Liveness probe — used by Docker / load balancers to verify the
-    process is alive and the event loop is responsive.
-
-    Returns:
-        ``{"status": "healthy"}``
-    """
-    return ORJSONResponse(content={"status": "healthy"})
 
 
 @app.get(
