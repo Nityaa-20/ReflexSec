@@ -6,7 +6,7 @@ from app.config import settings
 
 class OllamaService:
     def __init__(self) -> None:
-        self.base_url = settings.OLLAMA_BASE_URL.rstrip("/")
+        self.base_url = str(settings.OLLAMA_BASE_URL).rstrip("/")
         self.model = settings.OLLAMA_MODEL
         self.timeout = httpx.Timeout(120.0, connect=10.0)
 

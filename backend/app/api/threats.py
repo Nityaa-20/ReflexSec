@@ -5,6 +5,10 @@ from pydantic import BaseModel, Field, ConfigDict
 from typing import Optional
 from datetime import datetime
 from loguru import logger
+from app.services.threat_analysis_service import (
+    ThreatAnalysisResult,
+    threat_analysis_service,
+)
 
 from app.database.db import get_db
 from app.database.models import Threat
@@ -43,6 +47,9 @@ class DeleteResponse(BaseModel):
     message: str
     threat_id: int
 
+class ThreatAnalyzeRequest(BaseModel):
+    title: str = Field(..., min_length=1, max_length=255, description="Threat title")
+    description: str = Field(..., min_length=1, description="Threat description")
 
 # ── Endpoints ────────────────────────────────────────────────────────────────
 
@@ -148,3 +155,50 @@ async def delete_threat(
         message=f"Threat {threat_id} successfully deleted",
         threat_id=threat_id,
     )
+# ── Analysis Endpoint ────────────────────────────────────────────────────────
+
+@router.post("/analyze", response_model=ThreatAnalysisResult)
+async def analyze_threat(
+    payload: ThreatAnalyzeRequest,
+) -> ThreatAnalysisResult:
+    logger.info(
+        "Threat analysis requested | title={} description_length={}",
+        payload.title,
+        len(payload.description),
+    )
+
+    try:
+        result = await threat_analysis_service.analyze_threat(
+            title=payload.title,
+            description=payload.description,
+        )
+    except ValueError as exc:
+        logger.warning(
+            "Threat analysis returned invalid structure | title={} error={}",
+            payload.title,
+            exc,
+        )
+        raise HTTPException(status_code=422, detail=f"Analysis parsing failed: {exc}")
+    except RuntimeError as exc:
+        logger.error(
+            "LLM generation error during analysis | title={} error={}",
+            payload.title,
+            exc,
+        )
+        raise HTTPException(status_code=503, detail=f"LLM service unavailable: {exc}")
+    except Exception as exc:
+        logger.error(
+            "Unexpected error during threat analysis | title={} error={}",
+            payload.title,
+            exc,
+        )
+        raise HTTPException(status_code=500, detail="Internal server error during threat analysis")
+
+    logger.success(
+        "Threat analysis complete | title={} severity={} confidence={}",
+        payload.title,
+        result.severity,
+        result.confidence_score,
+    )
+
+    return result
