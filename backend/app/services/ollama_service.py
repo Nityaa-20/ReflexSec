@@ -27,6 +27,9 @@ class OllamaService:
             "model": self.model,
             "prompt": prompt,
             "stream": False,
+            "options": {
+                "num_predict": 512
+            }
         }
 
         try:

@@ -51,7 +51,6 @@ def _build_threat_section(r: ThreatAnalysisResult) -> str:
   Attack Vector  : {r.attack_vector}
   Mitigations    :
 {mitigations}
-  Reasoning      : {r.reasoning}
   Confidence     : {r.confidence_score}"""
 
 

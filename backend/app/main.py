@@ -16,6 +16,7 @@ from loguru import logger
 from app.config import settings
 from app.api.health import router as health_router
 from app.api.threats import router as threats_router
+from app.api.investigation import router as investigation_router
 from app.database.db import init_database
 
 # =============================================================
@@ -161,6 +162,7 @@ def create_application() -> FastAPI:
     # API Routers
     application.include_router(health_router)
     application.include_router(threats_router)
+    application.include_router(investigation_router)
     return application
 
 

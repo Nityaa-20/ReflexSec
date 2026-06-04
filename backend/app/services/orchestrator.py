@@ -61,8 +61,10 @@ class InvestigationResult(BaseModel):
     cve_analysis: CVEAnalysisResult | None = Field(None, description="CVE analysis agent output")
     ioc_analysis: IOCAnalysisResult | None = Field(None, description="IOC investigation agent output")
     critique: CritiqueResult | None = Field(None, description="Self-critique agent output")
-    report: ReportResult = Field(..., description="Final synthesized threat intelligence report")
-
+    report: ReportResult | None = Field(
+    None,
+    description="Final synthesized threat intelligence report"
+    )
 
 # ── Orchestrator ─────────────────────────────────────────────────────────────
 
@@ -149,41 +151,12 @@ class InvestigationOrchestrator:
                 raise RuntimeError(f"IOC analysis failed: {exc}") from exc
 
         # ── Step 4: Self-Critique ────────────────────────────────────────────
-        logger.info("Running self-critique agent")
-        try:
-            critique_result = await self._critique_service.critique_analysis(
-                threat_analysis=threat_result,
-                cve_analysis=cve_result,
-                ioc_analysis=ioc_result,
-            )
-            logger.success(
-                "Self-critique complete | weaknesses={} revised_confidence={}",
-                len(critique_result.weaknesses),
-                critique_result.revised_confidence_score,
-            )
-        except Exception as exc:
-            logger.warning(
-                "Self-critique agent failed — proceeding without critique | error={}",
-                exc,
-            )
-            critique_result = None
+        logger.info("Skipping self-critique temporarily")
+        critique_result = None
 
         # ── Step 5: Report Generation ────────────────────────────────────────
-        logger.info("Running report generation service")
-        try:
-            report_result = await self._report_service.generate_report(
-                threat_analysis=threat_result,
-                cve_analysis=cve_result,
-                ioc_analysis=ioc_result,
-                critique_result=critique_result,
-            )
-            logger.success(
-                "Report generation complete | soc_recommendations={}",
-                len(report_result.soc_recommendations),
-            )
-        except Exception as exc:
-            logger.error("Report generation service failed | error={}", exc)
-            raise RuntimeError(f"Report generation failed: {exc}") from exc
+        logger.info("Skipping report generation temporarily")
+        report_result = None
 
         # ── Step 6: Assemble Result ──────────────────────────────────────────
         result = InvestigationResult(

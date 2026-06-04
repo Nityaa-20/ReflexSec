@@ -68,13 +68,10 @@ Return exactly this JSON structure:
   "severity": "<one of: critical | high | medium | low | info>",
   "exploitability": "<one of: active | poc | theoretical | none>",
   "affected_systems": [
-    "<affected OS, software, library, or platform>",
-    "<additional affected system if applicable>"
+    "<up to 3 affected systems>"
   ],
   "mitigation": [
-    "<primary remediation step e.g. apply patch, upgrade version>",
-    "<secondary mitigation e.g. WAF rule, network segmentation>",
-    "<compensating control if patch unavailable>"
+    "<up to 3 mitigation steps>"
   ],
   "confidence_score": <float between 0.0 and 1.0>
 }}
@@ -147,7 +144,13 @@ class CVEAgent:
         cleaned = re.sub(r"^```(?:json)?\s*", "", cleaned, flags=re.IGNORECASE)
         cleaned = re.sub(r"\s*```$", "", cleaned)
         cleaned = cleaned.strip()
-
+        logger.debug(
+            "FULL CLEANED CVE RESPONSE:\n{}",
+            cleaned,
+        ) 
+        if cleaned.startswith("{") and not cleaned.rstrip().endswith("}"):
+            logger.warning("Incomplete JSON detected, auto-closing CVE object")
+            cleaned = cleaned.rstrip() + "\n}"
         # Extract first JSON object as fallback for verbose models
         match = re.search(r"\{.*\}", cleaned, re.DOTALL)
         if not match:

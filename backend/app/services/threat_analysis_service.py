@@ -15,7 +15,7 @@ class ThreatAnalysisResult(BaseModel):
     attack_vector: str = Field(..., description="Explanation of how the attack is carried out")
     mitigation: list[str] = Field(..., description="Ordered list of mitigation recommendations")
     confidence_score: float = Field(..., ge=0.0, le=1.0, description="Model confidence between 0.0 and 1.0")
-    reasoning: str = Field(..., description="Brief reasoning behind the analysis")
+    
 
     @field_validator("severity")
     @classmethod
@@ -46,16 +46,14 @@ Threat Description: {description}
 
 Return exactly this JSON structure:
 {{
-  "threat_type": "<short threat classification, e.g. SQL Injection, Ransomware, Phishing>",
+  "threat_type": "<short threat classification>",
   "severity": "<one of: critical | high | medium | low | info>",
   "attack_vector": "<clear explanation of how the attack is executed>",
   "mitigation": [
     "<step 1>",
-    "<step 2>",
-    "<step 3>"
+    "<step 2>"
   ],
-  "confidence_score": <float between 0.0 and 1.0>,
-  "reasoning": "<brief explanation of your analysis and confidence level>"
+  "confidence_score": <float between 0.0 and 1.0>
 }}"""
 
 
@@ -118,7 +116,14 @@ class ThreatAnalysisService:
         cleaned = re.sub(r"^```(?:json)?\s*", "", cleaned, flags=re.IGNORECASE)
         cleaned = re.sub(r"\s*```$", "", cleaned)
         cleaned = cleaned.strip()
+        logger.debug(
+            "FULL CLEANED RESPONSE:\n{}",
+            cleaned,
+        )
 
+        if cleaned.startswith("{") and not cleaned.rstrip().endswith("}"):
+            logger.warning("Incomplete JSON detected, auto-closing object")
+            cleaned = cleaned.rstrip() + "\n}"
         # Extract the first JSON object in the response as a fallback
         match = re.search(r"\{.*\}", cleaned, re.DOTALL)
         if not match:

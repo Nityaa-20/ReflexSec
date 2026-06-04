@@ -45,7 +45,6 @@ def _build_threat_section(r: ThreatAnalysisResult) -> str:
   Severity       : {r.severity}
   Attack Vector  : {r.attack_vector}
   Mitigation     : {chr(10).join(f"    - {m}" for m in r.mitigation)}
-  Reasoning      : {r.reasoning}
   Confidence     : {r.confidence_score}"""
 
 
