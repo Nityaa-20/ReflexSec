@@ -20,7 +20,7 @@
 
 ## 📖 Overview
 
-**ReflexSec** is an autonomous, AI-powered cybersecurity intelligence platform that goes beyond standard threat analysis. It not only collects and correlates threat indicators — CVEs, IPs, domains, and malware hashes — but uniquely employs a **self-critiquing review agent** that challenges its own findings, eliminates noise, and refines intelligence into high-confidence, actionable reports.
+**ReflexSec** is an autonomous, AI-powered cybersecurity intelligence platform that goes beyond standard threat analysis. It not only collects and correlates threat indicators — CVEs, IPs, domains, and malware hashes — but uniquely employs a **self-critiquing review agent** that challenges its own findings, eliminates noise, and refines intelligence into high-confidence, actionable reports..
 
 The platform is built on a multi-agent architecture where a **Collector Agent** gathers raw threat data, an **Analyst Agent** synthesizes it into structured reports, and a **Critic Agent** audits those reports for accuracy, completeness, and bias — iterating until the intelligence meets a quality threshold.
 
