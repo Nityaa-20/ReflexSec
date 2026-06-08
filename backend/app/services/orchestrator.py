@@ -155,8 +155,19 @@ class InvestigationOrchestrator:
         critique_result = None
 
         # ── Step 5: Report Generation ────────────────────────────────────────
-        logger.info("Skipping report generation temporarily")
-        report_result = None
+        logger.info("Running report generation service")
+
+        report_result = await self._report_service.generate_report(
+            threat_analysis=threat_result,
+            cve_analysis=cve_result,
+            ioc_analysis=ioc_result,
+            critique_result=critique_result,
+        )
+
+        logger.success(
+            "Report generation complete | soc_recommendations={}",
+            len(report_result.soc_recommendations),
+        )
 
         # ── Step 6: Assemble Result ──────────────────────────────────────────
         result = InvestigationResult(

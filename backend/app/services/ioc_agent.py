@@ -200,6 +200,17 @@ class IOCAgent:
         cleaned = re.sub(r"\s*```$", "", cleaned)
         cleaned = cleaned.strip()
 
+        if cleaned.startswith("{") and not cleaned.rstrip().endswith("}"):
+            logger.warning(
+                "Incomplete JSON detected, auto-closing IOC object | ioc_value={}",
+                ioc_value,
+            )
+            cleaned = cleaned.rstrip() + "\n}"
+        logger.debug(
+            "IOC CLEANED RESPONSE:\n{}",
+            cleaned,
+        )
+        
         # Extract first JSON object as fallback for verbose models
         match = re.search(r"\{.*\}", cleaned, re.DOTALL)
         if not match:

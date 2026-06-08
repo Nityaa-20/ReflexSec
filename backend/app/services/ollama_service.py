@@ -8,7 +8,7 @@ class OllamaService:
     def __init__(self) -> None:
         self.base_url = str(settings.OLLAMA_BASE_URL).rstrip("/")
         self.model = settings.OLLAMA_MODEL
-        self.timeout = httpx.Timeout(120.0, connect=10.0)
+        self.timeout = httpx.Timeout(300.0, connect=20.0)
 
     @retry(
         retry=retry_if_exception_type((httpx.HTTPError, httpx.ConnectError, httpx.TimeoutException)),
@@ -28,7 +28,7 @@ class OllamaService:
             "prompt": prompt,
             "stream": False,
             "options": {
-                "num_predict": 512
+                "num_predict": 1024
             }
         }
 
@@ -41,6 +41,11 @@ class OllamaService:
                 response.raise_for_status()
                 data = response.json()
                 generated_text: str = data.get("response", "")
+
+                logger.info(
+                    "Ollama response done | response_length={}",
+                    len(data.get("response", ""))
+                )
 
                 logger.success(
                     "Ollama generation complete | model={} response_length={}",

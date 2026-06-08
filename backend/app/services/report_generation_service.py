@@ -138,13 +138,56 @@ Produce a professional cyber threat intelligence report with these exact section
    - Each item should be specific enough to assign to an analyst
    - Order by urgency and impact
 
+IMPORTANT:
+soc_recommendations MUST be a JSON array of strings.
+
+Correct example:
+
+"soc_recommendations": [
+  "Monitor DNS queries for malicious-example.com",
+  "Enable PowerShell logging and alerting",
+  "Block malicious domains at the firewall"
+]
+
+Do NOT create objects inside soc_recommendations.
+Do NOT use key-value pairs.
+Do NOT use nested JSON structures.
+
+IMPORTANT:
+
+risk_analysis MUST be a single string.
+
+mitigation_strategy MUST be a single string.
+
+confidence_assessment MUST be a single string.
+
+Do NOT return JSON objects for these fields.
+Do NOT return nested JSON.
+Do NOT return key-value structures.
+
+Correct examples:
+
+"risk_analysis": "High severity due to active exploitation and significant business impact."
+
+"mitigation_strategy": "Immediately isolate affected hosts, patch vulnerable systems, enable enhanced monitoring, and implement long-term security hardening."
+
+"confidence_assessment": "High confidence based on multiple corroborating indicators and consistent threat intelligence findings."
+
+IMPORTANT:
+Return ONLY valid JSON.
+Do NOT include explanations before the JSON.
+Do NOT include markdown code blocks.
+Do NOT include comments.
+Every property name and string value must use double quotes.
+The JSON must be parseable by Python json.loads().
+
 Return exactly this JSON structure:
 {{
   "executive_summary": "<professional 2-4 sentence high-level summary>",
   "threat_assessment": "<detailed threat type, attack methods, and impact>",
-  "risk_analysis": "<severity justification, business impact, and exploitability analysis>",
-  "mitigation_strategy": "<immediate, short-term, and long-term mitigation actions>",
-  "confidence_assessment": "<confidence score explanation with critique findings referenced>",
+  "risk_analysis": "single string only",
+  "mitigation_strategy": "single string only",
+  "confidence_assessment": "single string only",
   "soc_recommendations": [
     "<Priority 1: specific actionable SOC task>",
     "<Priority 2: specific actionable SOC task>",
@@ -195,6 +238,8 @@ class ReportGenerationService:
             agent_sections="\n\n".join(sections),
         )
 
+        logger.info("Final report prompt length={}", len(prompt))
+
         try:
             raw_response = await self._ollama.generate(prompt)
         except Exception as exc:
@@ -204,6 +249,11 @@ class ReportGenerationService:
         logger.debug(
             "Raw report response received | response_length={}",
             len(raw_response),
+        )
+
+        logger.warning(
+            "RAW REPORT RESPONSE:\n{}",
+            raw_response
         )
 
         result = self._parse_response(raw_response)
