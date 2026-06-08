@@ -351,6 +351,420 @@ const styles = `
     .header { flex-direction: column; align-items: flex-start; }
     .header-right { align-items: flex-start; }
   }
+
+  /* ── INVESTIGATION FORM ── */
+  .investigation-form-container {
+    background: var(--bg-panel);
+    border: 1px solid var(--border);
+    padding: 24px;
+    margin-bottom: 24px;
+    position: relative;
+    animation: fadeSlideUp 0.5s ease both;
+  }
+
+  .investigation-form-container::before {
+    content: '';
+    position: absolute;
+    top: 0; left: 0;
+    width: 100%; height: 2px;
+    background: linear-gradient(90deg, var(--accent-cyan), transparent);
+  }
+
+  .form-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 16px;
+  }
+
+  .form-group {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+  }
+
+  .form-group.full-width {
+    grid-column: span 2;
+  }
+
+  .form-label {
+    font-family: var(--font-mono);
+    font-size: 10px;
+    color: var(--text-secondary);
+    letter-spacing: 2px;
+    text-transform: uppercase;
+  }
+
+  .form-input, .form-textarea {
+    background: var(--bg-card);
+    border: 1px solid var(--border);
+    color: var(--text-primary);
+    font-family: var(--font-body);
+    font-size: 13px;
+    padding: 10px 14px;
+    transition: all 0.2s;
+    outline: none;
+  }
+
+  .form-input:focus, .form-textarea:focus {
+    border-color: var(--accent-cyan);
+    box-shadow: 0 0 10px rgba(0, 212, 255, 0.1);
+    background: var(--bg-card-hover);
+  }
+
+  .form-textarea {
+    min-height: 80px;
+    resize: vertical;
+  }
+
+  .form-input::placeholder, .form-textarea::placeholder {
+    color: var(--text-dim);
+    font-family: var(--font-mono);
+    font-size: 11px;
+    opacity: 0.6;
+  }
+
+  .form-actions {
+    margin-top: 16px;
+    display: flex;
+    justify-content: flex-end;
+  }
+
+  .btn-run {
+    background: rgba(0, 212, 255, 0.05);
+    border: 1px solid var(--accent-cyan);
+    color: var(--accent-cyan);
+    font-family: var(--font-mono);
+    font-size: 12px;
+    font-weight: 600;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    padding: 12px 24px;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    box-shadow: 0 0 10px rgba(0, 212, 255, 0.05);
+  }
+
+  .btn-run:hover:not(:disabled) {
+    background: var(--accent-cyan);
+    color: var(--bg-void);
+    box-shadow: var(--glow-cyan);
+  }
+
+  .btn-run:disabled {
+    border-color: var(--text-dim);
+    color: var(--text-dim);
+    background: transparent;
+    cursor: not-allowed;
+  }
+
+  /* ── LOADING & ERROR ── */
+  .investigation-loading {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 40px 20px;
+    background: var(--bg-panel);
+    border: 1px solid var(--border);
+    margin-bottom: 24px;
+    text-align: center;
+    gap: 16px;
+    animation: fadeSlideUp 0.5s ease both;
+  }
+
+  .loading-spinner-container {
+    position: relative;
+    width: 48px;
+    height: 48px;
+  }
+
+  .loading-spinner {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    border: 2px solid transparent;
+    border-top-color: var(--accent-cyan);
+    border-bottom-color: var(--accent-cyan);
+    border-radius: 50%;
+    animation: spin 1.2s linear infinite;
+  }
+
+  .loading-spinner-inner {
+    position: absolute;
+    top: 5px; left: 5px; right: 5px; bottom: 5px;
+    border: 2px solid transparent;
+    border-left-color: var(--accent-green);
+    border-right-color: var(--accent-green);
+    border-radius: 50%;
+    animation: spin-reverse 1s linear infinite;
+  }
+
+  .loading-text {
+    font-family: var(--font-mono);
+    font-size: 13px;
+    color: var(--accent-cyan);
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    text-shadow: var(--glow-cyan);
+  }
+
+  .loading-subtext {
+    font-family: var(--font-body);
+    font-size: 11px;
+    color: var(--text-secondary);
+  }
+
+  .investigation-error {
+    background: rgba(255, 58, 58, 0.03);
+    border: 1px solid var(--accent-red);
+    padding: 20px;
+    margin-bottom: 24px;
+    position: relative;
+    animation: fadeSlideUp 0.5s ease both;
+  }
+
+  .investigation-error::before {
+    content: '';
+    position: absolute;
+    top: 0; left: 0;
+    width: 100%; height: 2px;
+    background: var(--accent-red);
+    box-shadow: var(--glow-red);
+  }
+
+  .error-title {
+    font-family: var(--font-mono);
+    font-size: 12px;
+    color: var(--accent-red);
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    margin-bottom: 6px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+
+  .error-message {
+    font-family: var(--font-body);
+    font-size: 13px;
+    color: var(--text-primary);
+  }
+
+  /* ── RESULTS ── */
+  .results-container {
+    animation: fadeSlideUp 0.6s ease both;
+    margin-bottom: 24px;
+  }
+
+  .results-grid-top {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 16px;
+    margin-bottom: 16px;
+  }
+
+  .results-grid-bottom {
+    display: grid;
+    grid-template-columns: 3fr 2fr;
+    gap: 16px;
+  }
+
+  .result-card {
+    background: var(--bg-panel);
+    border: 1px solid var(--border);
+    padding: 20px;
+    display: flex;
+    flex-direction: column;
+    gap: 14px;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .result-card::before {
+    content: '';
+    position: absolute;
+    top: 0; left: 0;
+    width: 2px; height: 100%;
+    background: var(--card-accent, var(--border));
+  }
+
+  .result-card.threat { --card-accent: var(--accent-cyan); }
+  .result-card.cve { --card-accent: var(--accent-amber); }
+  .result-card.ioc { --card-accent: var(--accent-red); }
+  .result-card.report { --card-accent: var(--accent-green); }
+  .result-card.soc { --card-accent: var(--accent-cyan); }
+
+  .result-card-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    border-bottom: 1px solid rgba(26, 45, 66, 0.4);
+    padding-bottom: 10px;
+  }
+
+  .result-card-title {
+    font-family: var(--font-display);
+    font-size: 15px;
+    font-weight: 700;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+    color: var(--text-primary);
+  }
+
+  .result-card-subtitle {
+    font-family: var(--font-mono);
+    font-size: 9px;
+    color: var(--text-secondary);
+    letter-spacing: 1px;
+  }
+
+  .metrics-list {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+  }
+
+  .metric-item {
+    display: flex;
+    flex-direction: column;
+    gap: 3px;
+  }
+
+  .metric-label {
+    font-family: var(--font-mono);
+    font-size: 9px;
+    color: var(--text-secondary);
+    letter-spacing: 1px;
+    text-transform: uppercase;
+  }
+
+  .metric-value {
+    font-family: var(--font-body);
+    font-size: 13px;
+    color: var(--text-primary);
+    line-height: 1.4;
+  }
+
+  .metric-value.mono {
+    font-family: var(--font-mono);
+    color: var(--accent-cyan);
+  }
+
+  .severity-indicator {
+    display: inline-block;
+    padding: 1px 6px;
+    font-family: var(--font-mono);
+    font-size: 9px;
+    font-weight: 600;
+    border: 1px solid;
+    text-transform: uppercase;
+  }
+
+  .severity-indicator.high {
+    color: var(--accent-red);
+    border-color: rgba(255, 58, 58, 0.3);
+    background: rgba(255, 58, 58, 0.05);
+  }
+
+  .severity-indicator.medium {
+    color: var(--accent-amber);
+    border-color: rgba(255, 170, 0, 0.3);
+    background: rgba(255, 170, 0, 0.05);
+  }
+
+  .severity-indicator.low {
+    color: var(--accent-green);
+    border-color: rgba(0, 255, 136, 0.3);
+    background: rgba(0, 255, 136, 0.05);
+  }
+
+  .report-sections {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+  }
+
+  .report-section {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+  }
+
+  .report-section-title {
+    font-family: var(--font-mono);
+    font-size: 10px;
+    color: var(--accent-green);
+    letter-spacing: 1.5px;
+    text-transform: uppercase;
+    border-bottom: 1px dashed rgba(26, 45, 66, 0.3);
+    padding-bottom: 2px;
+    margin-bottom: 2px;
+  }
+
+  .report-text {
+    font-family: var(--font-body);
+    font-size: 13px;
+    line-height: 1.5;
+    color: var(--text-primary);
+  }
+
+  .soc-list {
+    list-style: none;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+  }
+
+  .soc-item {
+    background: var(--bg-card);
+    border: 1px solid var(--border);
+    padding: 10px 14px;
+    font-size: 12px;
+    line-height: 1.5;
+    color: var(--text-primary);
+    position: relative;
+    padding-left: 24px;
+  }
+
+  .soc-item::before {
+    content: '❯';
+    position: absolute;
+    left: 10px;
+    top: 13px;
+    font-size: 8px;
+    color: var(--accent-cyan);
+  }
+
+  @keyframes spin {
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(360deg); }
+  }
+
+  @keyframes spin-reverse {
+    0% { transform: rotate(360deg); }
+    100% { transform: rotate(0deg); }
+  }
+
+  @media (max-width: 1024px) {
+    .results-grid-top {
+      grid-template-columns: repeat(2, 1fr);
+    }
+  }
+
+  @media (max-width: 768px) {
+    .form-grid {
+      grid-template-columns: 1fr;
+    }
+    .form-group.full-width {
+      grid-column: span 1;
+    }
+    .results-grid-top {
+      grid-template-columns: 1fr;
+    }
+    .results-grid-bottom {
+      grid-template-columns: 1fr;
+    }
+  }
 `
 
 const STATUS_SERVICES = [
@@ -426,10 +840,66 @@ export default function App() {
   const statuses = useStatuses()
   const time = useClock()
 
+  const [formData, setFormData] = useState({
+    title: '',
+    description: '',
+    cve_id: '',
+    cve_description: '',
+    ioc_value: ''
+  })
+  const [loading, setLoading] = useState(false)
+  const [error, setError] = useState(null)
+  const [result, setResult] = useState(null)
+
   const indicatorColor = {
     online:  'var(--accent-green)',
     offline: 'var(--accent-red)',
     loading: 'var(--accent-amber)',
+  }
+
+  const handleChange = (e) => {
+    const { name, value } = e.target
+    setFormData(prev => ({ ...prev, [name]: value }))
+  }
+
+  const handleInvestigate = async (e) => {
+    e.preventDefault()
+    setLoading(true)
+    setError(null)
+    setResult(null)
+
+    try {
+      const response = await axios.post(`${API_BASE}/investigate/`, formData)
+      setResult(response.data)
+    } catch (err) {
+      console.error(err)
+      const errMsg = err.response?.data?.detail || err.message || 'Unknown network error occurred.'
+      setError(errMsg)
+    } finally {
+      setLoading(false)
+    }
+  }
+
+  const renderSeverityBadge = (sev) => {
+    if (!sev) return 'N/A'
+    const s = sev.toLowerCase()
+    let severityClass = 'medium'
+    if (s.includes('high') || s.includes('critical')) {
+      severityClass = 'high'
+    } else if (s.includes('low') || s.includes('info')) {
+      severityClass = 'low'
+    }
+    return <span className={`severity-indicator ${severityClass}`}>{sev.toUpperCase()}</span>
+  }
+
+  const formatConfidence = (score) => {
+    if (score === undefined || score === null) return 'N/A'
+    const numericScore = parseFloat(score)
+    if (isNaN(numericScore)) return score
+    if (numericScore >= 0 && numericScore <= 1) {
+      return `${Math.round(numericScore * 100)}%`
+    }
+    return `${numericScore}%`
   }
 
   return (
@@ -476,6 +946,259 @@ export default function App() {
             </div>
           ))}
         </div>
+
+        {/* INVESTIGATION SYSTEM */}
+        <div className="section-label">// investigation engine</div>
+        <div className="investigation-form-container">
+          <form onSubmit={handleInvestigate}>
+            <div className="form-grid">
+              <div className="form-group">
+                <label className="form-label" htmlFor="title">Incident Title</label>
+                <input
+                  id="title"
+                  type="text"
+                  className="form-input"
+                  placeholder="e.g. APT29 Phishing Campaign"
+                  value={formData.title}
+                  onChange={handleChange}
+                  name="title"
+                  required
+                />
+              </div>
+              <div className="form-group">
+                <label className="form-label" htmlFor="ioc_value">IOC Value (IP/Domain/Hash)</label>
+                <input
+                  id="ioc_value"
+                  type="text"
+                  className="form-input"
+                  placeholder="e.g. 198.51.100.42"
+                  value={formData.ioc_value}
+                  onChange={handleChange}
+                  name="ioc_value"
+                />
+              </div>
+              <div className="form-group full-width">
+                <label className="form-label" htmlFor="description">Incident Description</label>
+                <textarea
+                  id="description"
+                  className="form-textarea"
+                  placeholder="Describe the detected threat, suspicious activity, or logs..."
+                  value={formData.description}
+                  onChange={handleChange}
+                  name="description"
+                  required
+                />
+              </div>
+              <div className="form-group">
+                <label className="form-label" htmlFor="cve_id">CVE ID</label>
+                <input
+                  id="cve_id"
+                  type="text"
+                  className="form-input"
+                  placeholder="e.g. CVE-2023-38831"
+                  value={formData.cve_id}
+                  onChange={handleChange}
+                  name="cve_id"
+                />
+              </div>
+              <div className="form-group">
+                <label className="form-label" htmlFor="cve_description">CVE Description</label>
+                <input
+                  id="cve_description"
+                  type="text"
+                  className="form-input"
+                  placeholder="e.g. WinRAR Remote Code Execution vulnerability..."
+                  value={formData.cve_description}
+                  onChange={handleChange}
+                  name="cve_description"
+                />
+              </div>
+            </div>
+            <div className="form-actions">
+              <button type="submit" className="btn-run" disabled={loading}>
+                {loading ? 'Analyzing...' : 'Run Investigation'}
+              </button>
+            </div>
+          </form>
+        </div>
+
+        {/* LOADING INDICATOR */}
+        {loading && (
+          <div className="investigation-loading">
+            <div className="loading-spinner-container">
+              <div className="loading-spinner" />
+              <div className="loading-spinner-inner" />
+            </div>
+            <div>
+              <div className="loading-text">Running Multi-Agent Investigation...</div>
+              <div className="loading-subtext">Correlating threat intelligence feeds, verifying vulnerability score, and generating recommendations.</div>
+            </div>
+          </div>
+        )}
+
+        {/* ERROR DISPLAY */}
+        {error && (
+          <div className="investigation-error">
+            <div className="error-title">
+              <span>⚠️</span> Investigation Failed
+            </div>
+            <div className="error-message">{error}</div>
+          </div>
+        )}
+
+        {/* INVESTIGATION RESULTS */}
+        {result && (
+          <div className="results-container">
+            <div className="section-label">// investigation analysis results</div>
+            
+            <div className="results-grid-top">
+              {/* A. Threat Analysis Card */}
+              <div className="result-card threat">
+                <div className="result-card-header">
+                  <div className="result-card-title">Threat Analysis</div>
+                  <span className="result-card-subtitle">// core_threat</span>
+                </div>
+                <div className="metrics-list">
+                  <div className="metric-item">
+                    <span className="metric-label">Threat Type</span>
+                    <span className="metric-value">{result.threat_analysis?.threat_type || 'N/A'}</span>
+                  </div>
+                  <div className="metric-item">
+                    <span className="metric-label">Severity</span>
+                    <span className="metric-value">
+                      {renderSeverityBadge(result.threat_analysis?.severity)}
+                    </span>
+                  </div>
+                  <div className="metric-item">
+                    <span className="metric-label">Attack Vector</span>
+                    <span className="metric-value">{result.threat_analysis?.attack_vector || 'N/A'}</span>
+                  </div>
+                  <div className="metric-item">
+                    <span className="metric-label">Mitigation</span>
+                    <span className="metric-value">{result.threat_analysis?.mitigation || 'N/A'}</span>
+                  </div>
+                  <div className="metric-item">
+                    <span className="metric-label">Confidence Score</span>
+                    <span className="metric-value mono">
+                      {formatConfidence(result.threat_analysis?.confidence_score)}
+                    </span>
+                  </div>
+                </div>
+              </div>
+
+              {/* B. CVE Analysis Card */}
+              <div className="result-card cve">
+                <div className="result-card-header">
+                  <div className="result-card-title">CVE Analysis</div>
+                  <span className="result-card-subtitle">// vulnerability_risk</span>
+                </div>
+                <div className="metrics-list">
+                  <div className="metric-item">
+                    <span className="metric-label">CVE ID</span>
+                    <span className="metric-value mono">{result.cve_analysis?.cve_id || 'N/A'}</span>
+                  </div>
+                  <div className="metric-item">
+                    <span className="metric-label">Severity</span>
+                    <span className="metric-value">
+                      {renderSeverityBadge(result.cve_analysis?.severity)}
+                    </span>
+                  </div>
+                  <div className="metric-item">
+                    <span className="metric-label">Exploitability</span>
+                    <span className="metric-value">{result.cve_analysis?.exploitability || 'N/A'}</span>
+                  </div>
+                  <div className="metric-item">
+                    <span className="metric-label">Affected Systems</span>
+                    <span className="metric-value">{result.cve_analysis?.affected_systems || 'N/A'}</span>
+                  </div>
+                  <div className="metric-item">
+                    <span className="metric-label">Recommendations</span>
+                    <span className="metric-value">{result.cve_analysis?.recommendations || 'N/A'}</span>
+                  </div>
+                </div>
+              </div>
+
+              {/* C. IOC Analysis Card */}
+              <div className="result-card ioc">
+                <div className="result-card-header">
+                  <div className="result-card-title">IOC Analysis</div>
+                  <span className="result-card-subtitle">// indicators_of_compromise</span>
+                </div>
+                <div className="metrics-list">
+                  <div className="metric-item">
+                    <span className="metric-label">IOC Value</span>
+                    <span className="metric-value mono">{result.ioc_analysis?.ioc_value || 'N/A'}</span>
+                  </div>
+                  <div className="metric-item">
+                    <span className="metric-label">IOC Type</span>
+                    <span className="metric-value">{result.ioc_analysis?.ioc_type || 'N/A'}</span>
+                  </div>
+                  <div className="metric-item">
+                    <span className="metric-label">Threat Level</span>
+                    <span className="metric-value">
+                      {renderSeverityBadge(result.ioc_analysis?.threat_level)}
+                    </span>
+                  </div>
+                  <div className="metric-item">
+                    <span className="metric-label">Recommended Actions</span>
+                    <span className="metric-value">{result.ioc_analysis?.recommended_actions || 'N/A'}</span>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <div className="results-grid-bottom">
+              {/* D. Executive Report Card */}
+              <div className="result-card report">
+                <div className="result-card-header">
+                  <div className="result-card-title">Executive Report</div>
+                  <span className="result-card-subtitle">// executive_summary</span>
+                </div>
+                <div className="report-sections">
+                  <div className="report-section">
+                    <span className="report-section-title">Executive Summary</span>
+                    <p className="report-text">{result.report?.executive_summary || 'N/A'}</p>
+                  </div>
+                  <div className="report-section">
+                    <span className="report-section-title">Threat Assessment</span>
+                    <p className="report-text">{result.report?.threat_assessment || 'N/A'}</p>
+                  </div>
+                  <div className="report-section">
+                    <span className="report-section-title">Risk Analysis</span>
+                    <p className="report-text">{result.report?.risk_analysis || 'N/A'}</p>
+                  </div>
+                  <div className="report-section">
+                    <span className="report-section-title">Mitigation Strategy</span>
+                    <p className="report-text">{result.report?.mitigation_strategy || 'N/A'}</p>
+                  </div>
+                  <div className="report-section">
+                    <span className="report-section-title">Confidence Assessment</span>
+                    <p className="report-text">{result.report?.confidence_assessment || 'N/A'}</p>
+                  </div>
+                </div>
+              </div>
+
+              {/* E. SOC Recommendations Card */}
+              <div className="result-card soc">
+                <div className="result-card-header">
+                  <div className="result-card-title">SOC Recommendations</div>
+                  <span className="result-card-subtitle">// technical_playbook</span>
+                </div>
+                <ul className="soc-list">
+                  {result.report?.soc_recommendations && result.report.soc_recommendations.length > 0 ? (
+                    result.report.soc_recommendations.map((rec, index) => (
+                      <li key={index} className="soc-item">
+                        {rec}
+                      </li>
+                    ))
+                  ) : (
+                    <li className="soc-item">No specific SOC recommendations provided.</li>
+                  )}
+                </ul>
+              </div>
+            </div>
+          </div>
+        )}
 
         {/* MODULES */}
         <div className="section-label">// intelligence modules</div>
