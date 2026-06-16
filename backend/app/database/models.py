@@ -565,3 +565,66 @@ class CVERecord(Base):
             f"<CVERecord id={self.id} cve_id={self.cve_id!r} "
             f"cvss={self.cvss_score} severity={self.severity}>"
         )
+
+
+# ---------------------------------------------------------------------------
+
+
+class Investigation(Base):
+    """
+    Persistence model for CTI multi-agent investigation history.
+    """
+
+    __tablename__ = "investigations"
+
+    __table_args__ = (
+        Index("ix_investigations_created_at", "created_at"),
+        Index("ix_investigations_severity", "severity"),
+        {"comment": "Historical CTI investigations log"},
+    )
+
+    # Primary key
+    id: Mapped[uuid.UUID] = mapped_column(
+        UUID(as_uuid=True),
+        primary_key=True,
+        default=uuid.uuid4,
+        nullable=False,
+        comment="Unique identifier for the investigation",
+    )
+
+    # Core fields
+    title: Mapped[str] = mapped_column(
+        String(256),
+        nullable=False,
+        comment="Investigation title",
+    )
+    severity: Mapped[str] = mapped_column(
+        String(64),
+        nullable=False,
+        default="medium",
+        comment="Derived overall severity",
+    )
+    threat_type: Mapped[Optional[str]] = mapped_column(
+        String(128),
+        nullable=True,
+        comment="Derived threat type",
+    )
+    report_json: Mapped[dict] = mapped_column(
+        JSON,
+        nullable=False,
+        comment="Serialized InvestigationResult payload",
+    )
+
+    # Audit timestamp
+    created_at: Mapped[datetime] = mapped_column(
+        DateTime(timezone=True),
+        nullable=False,
+        server_default=func.now(),
+        comment="Timestamp when investigation was run",
+    )
+
+    def __repr__(self) -> str:  # pragma: no cover
+        return (
+            f"<Investigation id={self.id} title={self.title!r} severity={self.severity}>"
+        )
+

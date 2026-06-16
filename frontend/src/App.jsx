@@ -735,6 +735,85 @@ const styles = `
     color: var(--accent-cyan);
   }
 
+  .card-list {
+    list-style: none;
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+    margin-top: 4px;
+  }
+
+  .card-list-item {
+    font-family: var(--font-body);
+    font-size: 13px;
+    line-height: 1.4;
+    color: var(--text-primary);
+    position: relative;
+    padding-left: 14px;
+  }
+
+  .card-list-item::before {
+    content: '•';
+    position: absolute;
+    left: 2px;
+    color: var(--accent-cyan);
+    font-weight: bold;
+  }
+
+  .intel-list {
+    list-style: none;
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+    margin-top: 4px;
+  }
+
+  .intel-list li {
+    font-family: var(--font-body);
+    font-size: 13px;
+    line-height: 1.4;
+    color: var(--text-primary);
+    position: relative;
+    padding-left: 14px;
+  }
+
+  .intel-list li::before {
+    content: '•';
+    position: absolute;
+    left: 2px;
+    color: var(--accent-cyan);
+    font-weight: bold;
+  }
+
+  .result-card.soc .intel-list {
+    list-style: none;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    margin-top: 0;
+  }
+
+  .result-card.soc .intel-list li {
+    background: var(--bg-card);
+    border: 1px solid var(--border);
+    padding: 10px 14px;
+    font-size: 12px;
+    line-height: 1.5;
+    color: var(--text-primary);
+    position: relative;
+    padding-left: 24px;
+  }
+
+  .result-card.soc .intel-list li::before {
+    content: '❯';
+    position: absolute;
+    left: 10px;
+    top: 13px;
+    font-size: 8px;
+    color: var(--accent-cyan);
+    font-weight: normal;
+  }
+
   @keyframes spin {
     0% { transform: rotate(0deg); }
     100% { transform: rotate(360deg); }
@@ -765,12 +844,266 @@ const styles = `
       grid-template-columns: 1fr;
     }
   }
+
+  /* --- NEW STYLES --- */
+  .engine-history-layout {
+    display: grid;
+    grid-template-columns: 2fr 1fr;
+    gap: 24px;
+    margin-bottom: 24px;
+  }
+  
+  .engine-column {
+    display: flex;
+    flex-direction: column;
+  }
+  
+  .history-column {
+    display: flex;
+    flex-direction: column;
+  }
+  
+  .history-container {
+    background: var(--bg-panel);
+    border: 1px solid var(--border);
+    padding: 24px;
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+    max-height: 480px;
+    overflow-y: auto;
+    position: relative;
+  }
+  
+  .history-container::before {
+    content: '';
+    position: absolute;
+    top: 0; left: 0;
+    width: 100%; height: 2px;
+    background: linear-gradient(90deg, var(--accent-cyan), transparent);
+  }
+  
+  .history-list {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+  }
+  
+  .history-item {
+    background: var(--bg-card);
+    border: 1px solid var(--border);
+    padding: 14px;
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    transition: all 0.2s;
+  }
+  
+  .history-item:hover {
+    background: var(--bg-card-hover);
+    border-color: var(--border-active);
+  }
+  
+  .history-item-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    gap: 8px;
+  }
+  
+  .history-item-title {
+    font-family: var(--font-body);
+    font-weight: 600;
+    font-size: 13px;
+    color: var(--text-primary);
+    line-height: 1.4;
+  }
+  
+  .history-item-meta {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-top: 4px;
+  }
+  
+  .history-item-time {
+    font-family: var(--font-mono);
+    font-size: 10px;
+    color: var(--text-dim);
+  }
+  
+  .btn-view-history {
+    background: transparent;
+    border: 1px solid var(--border-active);
+    color: var(--accent-cyan);
+    font-family: var(--font-mono);
+    font-size: 10px;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+    padding: 4px 10px;
+    cursor: pointer;
+    transition: all 0.2s;
+  }
+  
+  .btn-view-history:hover {
+    background: rgba(0, 212, 255, 0.1);
+    border-color: var(--accent-cyan);
+    box-shadow: 0 0 8px rgba(0, 212, 255, 0.2);
+  }
+  
+  .results-summary-strip {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+    gap: 16px;
+    margin-bottom: 24px;
+    animation: fadeSlideUp 0.5s ease both;
+  }
+  
+  .summary-card {
+    background: var(--bg-panel);
+    border: 1px solid var(--border);
+    padding: 20px;
+    position: relative;
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+  }
+  
+  .summary-card::before {
+    content: '';
+    position: absolute;
+    top: 0; left: 0;
+    width: 100%; height: 2px;
+    background: var(--card-accent, var(--border));
+  }
+  
+  .summary-card.risk-score { --card-accent: var(--accent-red); }
+  .summary-card.confidence-score { --card-accent: var(--accent-green); }
+  .summary-card.mitre-attack { --card-accent: var(--accent-cyan); }
+  
+  .summary-card-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+  
+  .summary-card-title {
+    font-family: var(--font-mono);
+    font-size: 10px;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    color: var(--text-secondary);
+  }
+  
+  .summary-card-body {
+    display: flex;
+    align-items: baseline;
+    gap: 8px;
+  }
+  
+  .summary-card-value {
+    font-family: var(--font-display);
+    font-size: 40px;
+    font-weight: 900;
+    line-height: 1;
+    color: var(--text-primary);
+  }
+  
+  .summary-card-max {
+    font-family: var(--font-mono);
+    font-size: 16px;
+    color: var(--text-dim);
+  }
+  
+  .summary-card-label {
+    font-family: var(--font-mono);
+    font-size: 11px;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+    font-weight: 600;
+  }
+  
+  .summary-card-desc {
+    font-size: 11px;
+    line-height: 1.4;
+    color: var(--text-secondary);
+  }
+  
+  .meter-bar {
+    width: 100%;
+    height: 6px;
+    background: var(--border);
+    position: relative;
+    border-radius: 3px;
+    overflow: hidden;
+  }
+  
+  .meter-fill {
+    height: 100%;
+    background: var(--card-accent);
+    box-shadow: 0 0 10px var(--card-accent);
+    transition: width 0.6s cubic-bezier(0.4, 0, 0.2, 1);
+  }
+  
+  .mitre-tags-list {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    margin-top: 4px;
+  }
+  
+  .mitre-tag {
+    background: rgba(0, 212, 255, 0.05);
+    border: 1px solid rgba(0, 212, 255, 0.2);
+    color: var(--accent-cyan);
+    font-family: var(--font-mono);
+    font-size: 10px;
+    padding: 4px 8px;
+    border-radius: 2px;
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+  }
+  
+  .mitre-tag-code {
+    font-weight: bold;
+    border-right: 1px solid rgba(0, 212, 255, 0.2);
+    padding-right: 6px;
+  }
+
+  .btn-export-pdf {
+    background: rgba(0, 255, 136, 0.05);
+    border: 1px solid var(--accent-green);
+    color: var(--accent-green);
+    font-family: var(--font-mono);
+    font-size: 10px;
+    font-weight: 600;
+    letter-spacing: 1.5px;
+    text-transform: uppercase;
+    padding: 6px 14px;
+    cursor: pointer;
+    transition: all 0.2s;
+    box-shadow: 0 0 8px rgba(0, 255, 136, 0.05);
+  }
+  
+  .btn-export-pdf:hover {
+    background: var(--accent-green);
+    color: var(--bg-void);
+    box-shadow: var(--glow-green);
+  }
+  
+  @media (max-width: 1024px) {
+    .engine-history-layout {
+      grid-template-columns: 1fr;
+    }
+  }
 `
 
 const STATUS_SERVICES = [
-  { key: 'backend',  label: 'Service',  name: 'Backend API',     endpoint: '/health' },
-  { key: 'database', label: 'Storage',  name: 'PostgreSQL DB',   endpoint: '/health/db' },
-  { key: 'ollama',   label: 'Inference',name: 'Ollama LLM',      endpoint: '/health/ollama' },
+  { key: 'backend', label: 'Service', name: 'Backend API', endpoint: '/health' },
+  { key: 'database', label: 'Storage', name: 'PostgreSQL DB', endpoint: '/health/database' },
+  { key: 'ollama', label: 'Inference', name: 'Ollama LLM', endpoint: '/health/ollama' },
 ]
 
 const MODULES = [
@@ -850,9 +1183,23 @@ export default function App() {
   const [loading, setLoading] = useState(false)
   const [error, setError] = useState(null)
   const [result, setResult] = useState(null)
+  const [history, setHistory] = useState([])
+
+  const fetchHistory = async () => {
+    try {
+      const response = await axios.get(`${API_BASE}/investigations`)
+      setHistory(response.data)
+    } catch (err) {
+      console.error("Failed to fetch history:", err)
+    }
+  }
+
+  useEffect(() => {
+    fetchHistory()
+  }, [])
 
   const indicatorColor = {
-    online:  'var(--accent-green)',
+    online: 'var(--accent-green)',
     offline: 'var(--accent-red)',
     loading: 'var(--accent-amber)',
   }
@@ -871,6 +1218,7 @@ export default function App() {
     try {
       const response = await axios.post(`${API_BASE}/investigate/`, formData)
       setResult(response.data)
+      fetchHistory()
     } catch (err) {
       console.error(err)
       const errMsg = err.response?.data?.detail || err.message || 'Unknown network error occurred.'
@@ -878,6 +1226,148 @@ export default function App() {
     } finally {
       setLoading(false)
     }
+  }
+
+  const handleViewHistoryReport = async (id) => {
+    setLoading(true)
+    setError(null)
+    try {
+      const response = await axios.get(`${API_BASE}/investigations/${id}`)
+      const data = response.data.report_json
+      data.investigation_id = response.data.id
+      setResult(data)
+    } catch (err) {
+      console.error(err)
+      setError("Failed to fetch historical report details.")
+    } finally {
+      setLoading(false)
+    }
+  }
+
+  const handleExportPDF = async (investigationId) => {
+    if (!investigationId) return
+    try {
+      const response = await axios.get(`${API_BASE}/reports/export/${investigationId}`, {
+        responseType: 'blob'
+      })
+      
+      let filename = `reflexsec_report_${investigationId.slice(0, 8)}.pdf`
+      const disposition = response.headers['content-disposition']
+      if (disposition && disposition.indexOf('attachment') !== -1) {
+        const filenameRegex = /filename[^;=\n]*=((['"]).*?\2|[^;\n]*)/
+        const matches = filenameRegex.exec(disposition)
+        if (matches != null && matches[1]) { 
+          filename = matches[1].replace(/['"]/g, '')
+        }
+      }
+
+      const url = window.URL.createObjectURL(new Blob([response.data], { type: 'application/pdf' }))
+      const link = document.createElement('a')
+      link.href = url
+      link.setAttribute('download', filename)
+      document.body.appendChild(link)
+      link.click()
+      link.remove()
+      window.URL.revokeObjectURL(url)
+    } catch (err) {
+      console.error("Failed to export PDF", err)
+      alert("Failed to export PDF report. Please try again.")
+    }
+  }
+
+  const extractMitreTechniques = (res) => {
+    if (!res) return []
+    const textToScan = [
+      res.report?.threat_assessment || '',
+      res.report?.executive_summary || '',
+      res.threat_analysis?.attack_vector || '',
+      res.threat_analysis?.threat_type || '',
+      res.cve_analysis?.exploitability || '',
+      res.ioc_analysis?.reasoning || '',
+    ].join(' ')
+
+    const techniqueRegex = /\b(T\d{4}(?:\.\d{3})?)\b/g
+    const matches = textToScan.match(techniqueRegex)
+    if (!matches) return []
+    
+    const uniqueMatches = Array.from(new Set(matches.map(m => m.toUpperCase())))
+    
+    const techniqueNames = {
+      'T1566': 'Phishing',
+      'T1059': 'Command and Scripting Interpreter',
+      'T1190': 'Exploit Public-Facing Application',
+      'T1203': 'Exploitation for Client Execution',
+      'T1078': 'Valid Accounts',
+      'T1547': 'Boot or Logon Autostart Execution',
+      'T1021': 'Remote Services',
+      'T1047': 'Windows Management Instrumentation',
+      'T1068': 'Exploitation for Privilege Escalation',
+      'T1562': 'Impair Defenses',
+      'T1071': 'Application Layer Protocol',
+      'T1573': 'Encrypted Channel',
+      'T1048': 'Exfiltration Over Alternative Protocol',
+      'T1486': 'Data Encrypted for Impact',
+    }
+    
+    return uniqueMatches.map(code => ({
+      code,
+      name: techniqueNames[code] || 'Unclassified Technique'
+    }))
+  }
+
+  const getOverallConfidence = (res) => {
+    if (!res) return 0
+    const scores = []
+    if (res.threat_analysis?.confidence_score !== undefined) scores.push(res.threat_analysis.confidence_score)
+    if (res.cve_analysis?.confidence_score !== undefined) scores.push(res.cve_analysis.confidence_score)
+    if (res.ioc_analysis?.confidence_score !== undefined) scores.push(res.ioc_analysis.confidence_score)
+    
+    if (scores.length === 0) return 0.75
+    return scores.reduce((sum, val) => sum + val, 0) / scores.length
+  }
+
+  const getRiskScore = (res) => {
+    if (!res) return { score: 0, label: 'NONE', color: 'var(--text-dim)' }
+    
+    let maxSev = 'info'
+    const sevs = []
+    if (res.threat_analysis?.severity) sevs.push(res.threat_analysis.severity.toLowerCase())
+    if (res.cve_analysis?.severity) sevs.push(res.cve_analysis.severity.toLowerCase())
+    if (res.ioc_analysis?.threat_level) sevs.push(res.ioc_analysis.threat_level.toLowerCase())
+    
+    const severityWeights = {
+      critical: 5,
+      high: 4,
+      medium: 3,
+      low: 2,
+      info: 1,
+      benign: 1,
+      unknown: 1
+    }
+    
+    let maxWeight = 0
+    for (const s of sevs) {
+      const w = severityWeights[s] || 1
+      if (w > maxWeight) {
+        maxWeight = w
+        maxSev = s
+      }
+    }
+    
+    if (maxWeight === 0) {
+      return { score: 5.0, label: 'MEDIUM', color: 'var(--accent-amber)' }
+    }
+    
+    const scoreMap = {
+      critical: { score: 9.5, label: 'CRITICAL', color: 'var(--accent-red)' },
+      high: { score: 8.2, label: 'HIGH', color: 'var(--accent-red)' },
+      medium: { score: 5.5, label: 'MEDIUM', color: 'var(--accent-amber)' },
+      low: { score: 3.0, label: 'LOW', color: 'var(--accent-green)' },
+      info: { score: 1.5, label: 'INFORMATIONAL', color: 'var(--accent-cyan)' },
+      benign: { score: 1.0, label: 'BENIGN', color: 'var(--accent-green)' }
+    }
+    
+    return scoreMap[maxSev] || { score: 5.0, label: 'MEDIUM', color: 'var(--accent-amber)' }
   }
 
   const renderSeverityBadge = (sev) => {
@@ -900,6 +1390,22 @@ export default function App() {
       return `${Math.round(numericScore * 100)}%`
     }
     return `${numericScore}%`
+  }
+
+  const renderList = (value) => {
+    if (!value) return <span className="metric-value">N/A</span>
+
+    if (Array.isArray(value)) {
+      return (
+        <ul className="intel-list">
+          {value.map((item, index) => (
+            <li key={index}>{String(item)}</li>
+          ))}
+        </ul>
+      )
+    }
+
+    return <span className="metric-value">{String(value)}</span>
   }
 
   return (
@@ -947,110 +1453,207 @@ export default function App() {
           ))}
         </div>
 
-        {/* INVESTIGATION SYSTEM */}
-        <div className="section-label">// investigation engine</div>
-        <div className="investigation-form-container">
-          <form onSubmit={handleInvestigate}>
-            <div className="form-grid">
-              <div className="form-group">
-                <label className="form-label" htmlFor="title">Incident Title</label>
-                <input
-                  id="title"
-                  type="text"
-                  className="form-input"
-                  placeholder="e.g. APT29 Phishing Campaign"
-                  value={formData.title}
-                  onChange={handleChange}
-                  name="title"
-                  required
-                />
+        {/* INVESTIGATION CONSOLE */}
+        <div className="section-label">// investigation console</div>
+        <div className="engine-history-layout">
+          <div className="engine-column">
+            <div className="investigation-form-container">
+              <form onSubmit={handleInvestigate}>
+                <div className="form-grid">
+                  <div className="form-group">
+                    <label className="form-label" htmlFor="title">Incident Title</label>
+                    <input
+                      id="title"
+                      type="text"
+                      className="form-input"
+                      placeholder="e.g. APT29 Phishing Campaign"
+                      value={formData.title}
+                      onChange={handleChange}
+                      name="title"
+                      required
+                    />
+                  </div>
+                  <div className="form-group">
+                    <label className="form-label" htmlFor="ioc_value">IOC Value (IP/Domain/Hash)</label>
+                    <input
+                      id="ioc_value"
+                      type="text"
+                      className="form-input"
+                      placeholder="e.g. 198.51.100.42"
+                      value={formData.ioc_value}
+                      onChange={handleChange}
+                      name="ioc_value"
+                    />
+                  </div>
+                  <div className="form-group full-width">
+                    <label className="form-label" htmlFor="description">Incident Description</label>
+                    <textarea
+                      id="description"
+                      className="form-textarea"
+                      placeholder="Describe the detected threat, suspicious activity, or logs..."
+                      value={formData.description}
+                      onChange={handleChange}
+                      name="description"
+                      required
+                    />
+                  </div>
+                  <div className="form-group">
+                    <label className="form-label" htmlFor="cve_id">CVE ID</label>
+                    <input
+                      id="cve_id"
+                      type="text"
+                      className="form-input"
+                      placeholder="e.g. CVE-2023-38831"
+                      value={formData.cve_id}
+                      onChange={handleChange}
+                      name="cve_id"
+                    />
+                  </div>
+                  <div className="form-group">
+                    <label className="form-label" htmlFor="cve_description">CVE Description</label>
+                    <input
+                      id="cve_description"
+                      type="text"
+                      className="form-input"
+                      placeholder="e.g. WinRAR Remote Code Execution vulnerability..."
+                      value={formData.cve_description}
+                      onChange={handleChange}
+                      name="cve_description"
+                    />
+                  </div>
+                </div>
+                <div className="form-actions">
+                  <button type="submit" className="btn-run" disabled={loading}>
+                    {loading ? 'Analyzing...' : 'Run Investigation'}
+                  </button>
+                </div>
+              </form>
+            </div>
+
+            {/* LOADING INDICATOR */}
+            {loading && (
+              <div className="investigation-loading">
+                <div className="loading-spinner-container">
+                  <div className="loading-spinner" />
+                  <div className="loading-spinner-inner" />
+                </div>
+                <div>
+                  <div className="loading-text">Running Multi-Agent Investigation...</div>
+                  <div className="loading-subtext">Correlating threat intelligence feeds, verifying vulnerability score, and generating recommendations.</div>
+                </div>
               </div>
-              <div className="form-group">
-                <label className="form-label" htmlFor="ioc_value">IOC Value (IP/Domain/Hash)</label>
-                <input
-                  id="ioc_value"
-                  type="text"
-                  className="form-input"
-                  placeholder="e.g. 198.51.100.42"
-                  value={formData.ioc_value}
-                  onChange={handleChange}
-                  name="ioc_value"
-                />
+            )}
+
+            {/* ERROR DISPLAY */}
+            {error && (
+              <div className="investigation-error">
+                <div className="error-title">
+                  <span>⚠️</span> Investigation Failed
+                </div>
+                <div className="error-message">{error}</div>
               </div>
-              <div className="form-group full-width">
-                <label className="form-label" htmlFor="description">Incident Description</label>
-                <textarea
-                  id="description"
-                  className="form-textarea"
-                  placeholder="Describe the detected threat, suspicious activity, or logs..."
-                  value={formData.description}
-                  onChange={handleChange}
-                  name="description"
-                  required
-                />
+            )}
+          </div>
+
+          {/* HISTORY COLUMN */}
+          <div className="history-column">
+            <div className="history-container">
+              <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '12px' }}>
+                <span className="form-label" style={{ color: 'var(--accent-cyan)' }}>// history_log</span>
+                <span className="history-item-time">{history.length} records</span>
               </div>
-              <div className="form-group">
-                <label className="form-label" htmlFor="cve_id">CVE ID</label>
-                <input
-                  id="cve_id"
-                  type="text"
-                  className="form-input"
-                  placeholder="e.g. CVE-2023-38831"
-                  value={formData.cve_id}
-                  onChange={handleChange}
-                  name="cve_id"
-                />
-              </div>
-              <div className="form-group">
-                <label className="form-label" htmlFor="cve_description">CVE Description</label>
-                <input
-                  id="cve_description"
-                  type="text"
-                  className="form-input"
-                  placeholder="e.g. WinRAR Remote Code Execution vulnerability..."
-                  value={formData.cve_description}
-                  onChange={handleChange}
-                  name="cve_description"
-                />
+              <div className="history-list">
+                {history.length === 0 ? (
+                  <div style={{ fontSize: '11px', color: 'var(--text-dim)', textAlign: 'center', padding: '20px' }}>
+                    NO PAST RECORDS
+                  </div>
+                ) : (
+                  history.map((item) => (
+                    <div key={item.id} className="history-item">
+                      <div className="history-item-header">
+                        <span className="history-item-title">{item.title}</span>
+                        {renderSeverityBadge(item.severity)}
+                      </div>
+                      <div className="history-item-meta">
+                        <span className="history-item-time">
+                          {item.created_at.replace('T', ' ').slice(0, 19)} UTC
+                        </span>
+                        <button
+                          onClick={() => handleViewHistoryReport(item.id)}
+                          className="btn-view-history"
+                        >
+                          View Report
+                        </button>
+                      </div>
+                    </div>
+                  ))
+                )}
               </div>
             </div>
-            <div className="form-actions">
-              <button type="submit" className="btn-run" disabled={loading}>
-                {loading ? 'Analyzing...' : 'Run Investigation'}
-              </button>
-            </div>
-          </form>
+          </div>
         </div>
-
-        {/* LOADING INDICATOR */}
-        {loading && (
-          <div className="investigation-loading">
-            <div className="loading-spinner-container">
-              <div className="loading-spinner" />
-              <div className="loading-spinner-inner" />
-            </div>
-            <div>
-              <div className="loading-text">Running Multi-Agent Investigation...</div>
-              <div className="loading-subtext">Correlating threat intelligence feeds, verifying vulnerability score, and generating recommendations.</div>
-            </div>
-          </div>
-        )}
-
-        {/* ERROR DISPLAY */}
-        {error && (
-          <div className="investigation-error">
-            <div className="error-title">
-              <span>⚠️</span> Investigation Failed
-            </div>
-            <div className="error-message">{error}</div>
-          </div>
-        )}
 
         {/* INVESTIGATION RESULTS */}
         {result && (
           <div className="results-container">
             <div className="section-label">// investigation analysis results</div>
-            
+
+            {/* SUMMARY METRICS CARDS */}
+            <div className="results-summary-strip">
+              {/* Risk Score Card */}
+              <div className="summary-card risk-score">
+                <div className="summary-card-header">
+                  <span className="summary-card-title">// risk_score</span>
+                  <span className="summary-card-label" style={{ color: getRiskScore(result).color }}>
+                    {getRiskScore(result).label}
+                  </span>
+                </div>
+                <div className="summary-card-body">
+                  <span className="summary-card-value">{getRiskScore(result).score.toFixed(1)}</span>
+                  <span className="summary-card-max">/ 10.0</span>
+                </div>
+                <div className="meter-bar">
+                  <div className="meter-fill" style={{ width: `${getRiskScore(result).score * 10}%` }} />
+                </div>
+                <span className="summary-card-desc">Derived index based on maximum detected system severity</span>
+              </div>
+
+              {/* Confidence Score Card */}
+              <div className="summary-card confidence-score">
+                <div className="summary-card-header">
+                  <span className="summary-card-title">// confidence_score</span>
+                  <span className="summary-card-label" style={{ color: 'var(--accent-green)' }}>
+                    {getOverallConfidence(result) >= 0.8 ? 'HIGH' : getOverallConfidence(result) >= 0.5 ? 'MEDIUM' : 'LOW'}
+                  </span>
+                </div>
+                <div className="summary-card-body">
+                  <span className="summary-card-value">{Math.round(getOverallConfidence(result) * 100)}%</span>
+                </div>
+                <div className="meter-bar">
+                  <div className="meter-fill" style={{ width: `${getOverallConfidence(result) * 100}%` }} />
+                </div>
+                <span className="summary-card-desc">Average model confidence across all analytical agents</span>
+              </div>
+
+              {/* MITRE ATT&CK Card */}
+              {extractMitreTechniques(result).length > 0 && (
+                <div className="summary-card mitre-attack">
+                  <div className="summary-card-header">
+                    <span className="summary-card-title">// mitre_attack_techniques</span>
+                  </div>
+                  <div className="mitre-tags-list">
+                    {extractMitreTechniques(result).map((tech, i) => (
+                      <span key={i} className="mitre-tag" title={tech.name}>
+                        <span className="mitre-tag-code">{tech.code}</span>
+                        <span>{tech.name}</span>
+                      </span>
+                    ))}
+                  </div>
+                  <span className="summary-card-desc" style={{ marginTop: 'auto' }}>Identified adversary TTP alignments extracted from findings</span>
+                </div>
+              )}
+            </div>
+
             <div className="results-grid-top">
               {/* A. Threat Analysis Card */}
               <div className="result-card threat">
@@ -1075,7 +1678,7 @@ export default function App() {
                   </div>
                   <div className="metric-item">
                     <span className="metric-label">Mitigation</span>
-                    <span className="metric-value">{result.threat_analysis?.mitigation || 'N/A'}</span>
+                    {renderList(result.threat_analysis?.mitigation)}
                   </div>
                   <div className="metric-item">
                     <span className="metric-label">Confidence Score</span>
@@ -1109,11 +1712,11 @@ export default function App() {
                   </div>
                   <div className="metric-item">
                     <span className="metric-label">Affected Systems</span>
-                    <span className="metric-value">{result.cve_analysis?.affected_systems || 'N/A'}</span>
+                    {renderList(result.cve_analysis?.affected_systems)}
                   </div>
                   <div className="metric-item">
                     <span className="metric-label">Recommendations</span>
-                    <span className="metric-value">{result.cve_analysis?.recommendations || 'N/A'}</span>
+                    {renderList(result.cve_analysis?.mitigation)}
                   </div>
                 </div>
               </div>
@@ -1134,6 +1737,10 @@ export default function App() {
                     <span className="metric-value">{result.ioc_analysis?.ioc_type || 'N/A'}</span>
                   </div>
                   <div className="metric-item">
+                    <span className="metric-label">Associated Risks</span>
+                    {renderList(result.ioc_analysis?.associated_risks)}
+                  </div>
+                  <div className="metric-item">
                     <span className="metric-label">Threat Level</span>
                     <span className="metric-value">
                       {renderSeverityBadge(result.ioc_analysis?.threat_level)}
@@ -1141,7 +1748,7 @@ export default function App() {
                   </div>
                   <div className="metric-item">
                     <span className="metric-label">Recommended Actions</span>
-                    <span className="metric-value">{result.ioc_analysis?.recommended_actions || 'N/A'}</span>
+                    {renderList(result.ioc_analysis?.recommended_actions)}
                   </div>
                 </div>
               </div>
@@ -1150,9 +1757,19 @@ export default function App() {
             <div className="results-grid-bottom">
               {/* D. Executive Report Card */}
               <div className="result-card report">
-                <div className="result-card-header">
-                  <div className="result-card-title">Executive Report</div>
-                  <span className="result-card-subtitle">// executive_summary</span>
+                <div className="result-card-header" style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+                  <div>
+                    <div className="result-card-title">Executive Report</div>
+                    <span className="result-card-subtitle">// executive_summary</span>
+                  </div>
+                  {result.investigation_id && (
+                    <button
+                      onClick={() => handleExportPDF(result.investigation_id)}
+                      className="btn-export-pdf"
+                    >
+                      Export PDF
+                    </button>
+                  )}
                 </div>
                 <div className="report-sections">
                   <div className="report-section">
@@ -1184,17 +1801,7 @@ export default function App() {
                   <div className="result-card-title">SOC Recommendations</div>
                   <span className="result-card-subtitle">// technical_playbook</span>
                 </div>
-                <ul className="soc-list">
-                  {result.report?.soc_recommendations && result.report.soc_recommendations.length > 0 ? (
-                    result.report.soc_recommendations.map((rec, index) => (
-                      <li key={index} className="soc-item">
-                        {rec}
-                      </li>
-                    ))
-                  ) : (
-                    <li className="soc-item">No specific SOC recommendations provided.</li>
-                  )}
-                </ul>
+                {renderList(result.report?.soc_recommendations)}
               </div>
             </div>
           </div>

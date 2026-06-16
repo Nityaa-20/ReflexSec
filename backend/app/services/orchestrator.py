@@ -1,6 +1,8 @@
+import uuid
 from typing import Any
 from loguru import logger
 from pydantic import BaseModel, Field, model_validator
+
 
 from app.services.threat_analysis_service import (
     ThreatAnalysisService,
@@ -57,13 +59,14 @@ class InvestigationRequest(BaseModel):
 
 
 class InvestigationResult(BaseModel):
+    investigation_id: uuid.UUID | None = Field(None, description="Database unique identifier of the investigation record")
     threat_analysis: ThreatAnalysisResult | None = Field(None, description="Threat analysis agent output")
     cve_analysis: CVEAnalysisResult | None = Field(None, description="CVE analysis agent output")
     ioc_analysis: IOCAnalysisResult | None = Field(None, description="IOC investigation agent output")
     critique: CritiqueResult | None = Field(None, description="Self-critique agent output")
     report: ReportResult | None = Field(
-    None,
-    description="Final synthesized threat intelligence report"
+        None,
+        description="Final synthesized threat intelligence report"
     )
 
 # ── Orchestrator ─────────────────────────────────────────────────────────────
